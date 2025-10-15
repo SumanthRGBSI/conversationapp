@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+:root {
+    --brand-primary: #3B82F6; /* blue-500: A balanced, professional blue */
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-400: #9ca3af;
+    --gray-600: #4b5563;
+    --gray-800: #1f2937;
+    --background-color: #F7F8FC;
+}
+
+/* Custom scrollbar for a refined look */
+:host ::ng-deep .chat-body::-webkit-scrollbar {
+    width: 8px;
+}
+:host ::ng-deep .chat-body::-webkit-scrollbar-track {
+    background: transparent;
+}
+:host ::ng-deep .chat-body::-webkit-scrollbar-thumb {
+    background: var(--gray-200);
+    border-radius: 4px;
+}
+:host ::ng-deep .chat-body::-webkit-scrollbar-thumb:hover {
+    background: #d1d5db;
+}
+
+.message-container {
+    transition: all 0.2s ease-in-out;
+}
+
+.message-container.selected {
+    box-shadow: 0 0 0 2px var(--brand-primary);
+}
+
+:host ::ng-deep #message-input:focus {
+    outline: none;
+}
+
+.toolbar-btn {
+    @apply p-2 rounded-lg text-gray-500 hover:bg-gray-100 hover:text-gray-900;
+}
+
+/* Placeholder styling for contenteditable div */
+:host ::ng-deep #message-input:empty:before {
+    content: attr(data-placeholder);
+    color: var(--gray-400);
+    pointer-events: none;
+}
+
+/* Animation for new message */
+@keyframes slideInFade {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.new-message-animation {
+    animation: slideInFade 0.4s ease-out;
+}
