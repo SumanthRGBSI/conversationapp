@@ -8,19 +8,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --brand-primary: #2563eb;
-            --brand-secondary: #4f46e5;
+            --brand-primary: #3B82F6; /* blue-500: A balanced, professional blue */
             --gray-50: #f9fafb;
             --gray-100: #f3f4f6;
             --gray-200: #e5e7eb;
             --gray-400: #9ca3af;
             --gray-600: #4b5563;
             --gray-800: #1f2937;
+            --background-color: #F7F8FC;
         }
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--gray-100);
+            background-color: var(--background-color);
         }
 
         /* Custom scrollbar for a refined look */
@@ -42,14 +42,8 @@
             transition: all 0.2s ease-in-out;
         }
 
-        .message-container:hover {
-            background-color: var(--gray-50);
-        }
-
         .message-container.selected {
-            border-color: var(--brand-primary);
-            background-color: #eff6ff; /* blue-50 */
-            box-shadow: 0 0 0 1px var(--brand-primary);
+            box-shadow: 0 0 0 2px var(--brand-primary);
         }
         
         #message-input:focus {
@@ -57,7 +51,7 @@
         }
         
         .toolbar-btn {
-            @apply p-2 rounded text-gray-500 hover:bg-gray-100 hover:text-gray-900;
+            @apply p-2 rounded-lg text-gray-500 hover:bg-gray-100 hover:text-gray-900;
         }
 
         /* Placeholder styling for contenteditable div */
@@ -89,22 +83,22 @@
     <!-- Conversation Component Container -->
     <div id="conversation-component" class="w-full max-w-4xl h-[95vh] bg-white rounded-2xl shadow-xl flex flex-col overflow-hidden">
         
-        <header class="p-4 border-b border-gray-200">
-            <h1 class="text-lg font-semibold text-gray-800">Conversations</h1>
+        <header class="p-4 border-b border-gray-100">
+            <h1 class="text-lg font-semibold text-gray-800">Project Apollo Thread</h1>
         </header>
 
-        <main id="chat-body" class="flex-1 p-6 overflow-y-auto bg-white space-y-5">
+        <main id="chat-body" class="flex-1 p-6 overflow-y-auto bg-gray-50 space-y-2">
             <!-- Messages will be dynamically injected here -->
         </main>
 
         <!-- Footer with Rich Text Input -->
-        <footer class="p-4 border-t border-gray-200 bg-gray-50">
+        <footer class="p-4 border-t border-gray-100 bg-white">
             <!-- Reply Preview Container -->
-            <div id="reply-preview-container" class="hidden mb-2 p-3 border-l-4 border-blue-500 bg-white rounded-r-lg shadow-sm">
+            <div id="reply-preview-container" class="hidden mb-2 p-3 border-l-4 border-blue-400 bg-blue-50 rounded-r-lg">
                 <div class="flex justify-between items-center">
                     <div>
-                        <p id="reply-to-name" class="text-sm font-semibold text-blue-600"></p>
-                        <p id="reply-to-content" class="text-sm text-gray-500 truncate max-w-md"></p>
+                        <p id="reply-to-name" class="text-sm font-semibold text-blue-800"></p>
+                        <p id="reply-to-content" class="text-sm text-gray-600 truncate max-w-md"></p>
                     </div>
                     <button id="cancel-reply-btn" class="p-1 rounded-full hover:bg-gray-200 text-gray-500 hover:text-gray-700">
                         <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
@@ -113,26 +107,24 @@
             </div>
 
             <!-- Rich Text Editor Container -->
-            <div class="bg-white border border-gray-300 rounded-lg shadow-sm focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500">
+            <div class="bg-white border border-gray-200 rounded-lg focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500">
                 <!-- Text Input Area -->
-                <div id="message-input" contenteditable="true" data-placeholder="Add a comment..." class="w-full p-3 text-sm text-gray-800 min-h-[80px]"></div>
+                <div id="message-input" contenteditable="true" data-placeholder="Add a comment or attach a file..." class="w-full p-4 text-sm text-gray-800 min-h-[70px]"></div>
                 <!-- Toolbar and Attachments Preview -->
-                <div class="p-2 border-t border-gray-200">
-                    <div id="attachments-preview" class="space-y-2 mb-2"></div>
+                <div class="p-2 border-t border-gray-100">
+                    <div id="attachments-preview" class="px-2 space-y-2 mb-2"></div>
                     <div class="flex justify-between items-center">
                         <div class="flex items-center space-x-1">
                              <button class="toolbar-btn font-bold">B</button>
                              <button class="toolbar-btn italic">I</button>
                              <button class="toolbar-btn underline">U</button>
                              <div class="h-5 border-l border-gray-200 mx-1"></div>
-                             <button class="toolbar-btn"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"></path></svg></button>
-                             <button class="toolbar-btn"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg></button>
                              <button id="attachment-btn" class="toolbar-btn"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path></svg></button>
                              <input type="file" id="file-input" class="hidden" multiple>
                         </div>
-                        <button id="send-button" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 flex items-center">
+                        <button id="send-button" class="px-5 py-2 text-sm font-medium text-white bg-blue-500 border border-transparent rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 flex items-center shadow-sm">
                             Send
-                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"></path></svg>
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"></path></svg>
                         </button>
                     </div>
                 </div>
@@ -161,43 +153,69 @@
                 { id: 2, user: { name: 'Admin', role: 'Admin' }, content: ['Please review the attached specification document for V1.', 'Let me know if you have any questions.'], documents: 'October 15, 2025 9:46 AM', type: 'highlighted', attachments: [{ name: 'specification-v1.pdf', size: '1.2 MB' }] },
                 { id: 3, user: { name: 'Alice Freeman', role: 'Project Manager' }, content: ['The initial specs look good. I\'ve added a few notes in the shared document. Please proceed with the component mockups.'], documents: 'October 15, 2025 9:55 AM', type: 'standard', attachments: [] },
                 { id: 4, user: { name: 'You', role: 'Developer' },  content: ['Understood. I will start working on the mockups and provide an update by EOD.'], documents: 'October 15, 2025 10:05 AM', type: 'reply', replyTo: { senderName: 'Alice Freeman', content: 'The initial specs look good...' }, attachments: [] },
+                 { id: 5, user: { name: 'Alice Freeman', role: 'Project Manager' }, content: ['Perfect, thank you!'], documents: 'October 15, 2025 10:07 AM', type: 'standard', attachments: [] },
             ];
             
             let messageIdCounter = mockMessages.length + 1;
 
             function createMessageElement(message) {
+                const isSent = message.user.name === 'You';
+                
+                const messageWrapper = document.createElement('div');
+                messageWrapper.className = `flex w-full items-start gap-3 ${isSent ? 'justify-end' : 'justify-start'}`;
+
                 const messageContainer = document.createElement('div');
                 messageContainer.dataset.messageId = message.id;
-                messageContainer.className = `message-container p-4 rounded-lg border cursor-pointer`;
-                
+                messageContainer.className = `message-container p-4 border cursor-pointer max-w-md lg:max-w-lg shadow-sm`;
+
                 const isSelected = message.id === selectedMessageId;
-                const bgColor = message.type === 'highlighted' ? 'bg-indigo-50' : 'bg-white';
-                const borderColor = message.type === 'highlighted' ? 'border-indigo-200' : 'border-gray-200';
                 
-                messageContainer.classList.add(bgColor, borderColor);
+                if (isSent) {
+                    messageContainer.classList.add('bg-blue-500', 'border-blue-500', 'rounded-t-2xl', 'rounded-bl-2xl');
+                } else {
+                    const bgColor = message.type === 'highlighted' ? 'bg-indigo-50' : 'bg-white';
+                    const borderColor = message.type === 'highlighted' ? 'border-indigo-100' : 'border-gray-200';
+                    messageContainer.classList.add(bgColor, borderColor, 'rounded-t-2xl', 'rounded-br-2xl');
+                }
+
                 if (isSelected) {
                     messageContainer.classList.add('selected');
                 }
+
+                const colors = {
+                    mainText: isSent ? 'text-white' : 'text-gray-900',
+                    subText: isSent ? 'text-blue-100' : 'text-gray-500',
+                    timestamp: isSent ? 'text-blue-200' : 'text-gray-400',
+                    content: isSent ? 'text-white/90' : 'text-gray-700',
+                    replySender: isSent ? 'text-white' : 'text-gray-700',
+                    replyContent: isSent ? 'text-blue-100' : 'text-gray-600',
+                    replyBg: isSent ? 'bg-blue-400/80' : 'bg-gray-100',
+                    replyBorder: isSent ? 'border-blue-300' : 'border-gray-300',
+                    attachmentLink: isSent ? 'text-white hover:underline' : 'text-blue-600 hover:underline',
+                    attachmentIcon: isSent ? 'text-blue-200' : 'text-gray-400',
+                    attachmentSize: isSent ? 'text-blue-200' : 'text-gray-500',
+                    attachmentBorder: isSent ? 'border-blue-400/50' : 'border-gray-200/80'
+                };
                 
-                let contentHtml = message.content.map(line => `<p class="text-sm text-gray-700">${line}</p>`).join('');
+                let contentHtml = message.content.map(line => `<p class="text-sm leading-6 ${colors.content}">${line}</p>`).join('');
                 
                 let replyHtml = '';
                 if (message.replyTo) {
                     replyHtml = `
-                        <div class="mb-3 p-2 border-l-2 border-gray-300 bg-gray-50 rounded-r-md">
-                            <p class="text-xs font-semibold text-gray-600">${message.replyTo.senderName}</p>
-                            <p class="text-xs truncate text-gray-500">${message.replyTo.content}</p>
+                        <div class="mb-3 p-2.5 border-l-2 ${colors.replyBorder} ${colors.replyBg} rounded-r-md">
+                            <p class="text-xs font-semibold ${colors.replySender}">${message.replyTo.senderName}</p>
+                            <p class="text-xs truncate ${colors.replyContent}">${message.replyTo.content}</p>
                         </div>`;
                 }
                 
                 let attachmentsHtml = '';
                 if(message.attachments && message.attachments.length > 0) {
-                    attachmentsHtml = `<div class="mt-3 pt-3 border-t border-gray-200/80 space-y-2">` +
+                    attachmentsHtml = `<div class="mt-3 pt-3 border-t ${colors.attachmentBorder} space-y-2">` +
                         message.attachments.map(file => `
-                            <div class="flex items-center text-sm text-blue-600 hover:underline cursor-pointer font-medium">
-                                <svg class="w-5 h-5 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                                <span>${file.name}</span>
-                                <span class="text-xs text-gray-500 ml-auto">${file.size}</span>
+                            <div class="flex items-center text-sm font-medium">
+                                <svg class="w-5 h-5 mr-2 ${colors.attachmentIcon}" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                                <span class="${colors.attachmentLink} cursor-pointer">${file.name}</span>
+                                <span class="text-xs ${colors.attachmentSize} ml-auto">${file.size}</span>
                             </div>
                         `).join('') + `</div>`;
                 }
@@ -205,15 +223,17 @@
                 messageContainer.innerHTML = `
                     <div class="flex justify-between items-start mb-2">
                         <div>
-                            <p class="font-semibold text-sm text-gray-900">${message.user.name}</p>
-                            <p class="text-xs text-gray-500">${message.user.role}</p>
+                            <p class="font-semibold text-sm ${colors.mainText}">${message.user.name}</p>
+                            <p class="text-xs ${colors.subText}">${message.user.role}</p>
                         </div>
-                        <p class="text-xs text-gray-400 flex-shrink-0 ml-4">${message.documents}</p>
+                        <p class="text-xs ${colors.timestamp} flex-shrink-0 ml-4">${message.documents}</p>
                     </div>
                     ${replyHtml}
                     <div class="space-y-1">${contentHtml}</div>
                     ${attachmentsHtml}`;
-                return messageContainer;
+                
+                messageWrapper.appendChild(messageContainer);
+                return messageWrapper;
             }
 
             function renderMessages() {
@@ -233,7 +253,6 @@
             }
             
             function updateInputUI() {
-                const placeholder = messageInput.getAttribute('data-placeholder');
                 if (selectedMessageId) {
                     const messageToReply = mockMessages.find(m => m.id === selectedMessageId);
                     if (messageToReply) {
@@ -244,7 +263,7 @@
                     }
                 } else {
                     replyPreviewContainer.classList.add('hidden');
-                     messageInput.setAttribute('data-placeholder', 'Add a comment...');
+                     messageInput.setAttribute('data-placeholder', 'Add a comment or attach a file...');
                 }
             }
             
@@ -252,7 +271,6 @@
                 const previouslySelected = chatBody.querySelector('.message-container.selected');
                 if (previouslySelected) {
                     previouslySelected.classList.remove('selected');
-                    previouslySelected.style.boxShadow = '';
                 }
                 selectedMessageId = null;
                 updateInputUI();
@@ -282,9 +300,9 @@
                     fileEl.innerHTML = `
                         <div class="flex items-center overflow-hidden">
                              <svg class="w-5 h-5 mr-2 text-gray-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                            <span class="truncate text-gray-800">${file.name}</span>
+                            <span class="truncate text-gray-800 font-medium">${file.name}</span>
                         </div>
-                        <button data-index="${index}" class="remove-file-btn ml-2 text-red-500 hover:text-red-700 p-1 rounded-full hover:bg-red-100 flex-shrink-0">&times;</button>
+                        <button data-index="${index}" class="remove-file-btn ml-2 text-gray-500 hover:text-red-500 p-1 rounded-full hover:bg-red-100 flex-shrink-0 text-lg leading-none">&times;</button>
                     `;
                     attachmentsPreview.appendChild(fileEl);
                 });
@@ -303,7 +321,7 @@
                         id: messageIdCounter++,
                         user: { name: 'You', role: 'Developer' },
                         content: messageContent,
-                        documents: new Date().toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true }),
+                        documents: new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }),
                         type: 'reply',
                         replyTo: { senderName: messageToReply.user.name, content: messageToReply.content.join(' ') },
                         attachments: attachedFiles.map(f => ({ name: f.name, size: `${(f.size / 1024).toFixed(1)} KB` }))
@@ -313,7 +331,7 @@
                         id: messageIdCounter++,
                         user: { name: 'You', role: 'Developer' },
                         content: messageContent,
-                        documents: new Date().toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true }),
+                        documents: new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }),
                         type: 'standard',
                         attachments: attachedFiles.map(f => ({ name: f.name, size: `${(f.size / 1024).toFixed(1)} KB` }))
                     };
