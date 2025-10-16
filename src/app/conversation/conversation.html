@@ -94,11 +94,11 @@
                 </div>
                 <div class="flex justify-between items-center">
                     <div class="flex items-center space-x-1">
-                         <button (click)="applyFormat('bold')" class="toolbar-btn font-bold">B</button>
-                         <button (click)="applyFormat('italic')" class="toolbar-btn italic">I</button>
-                         <button (click)="applyFormat('underline')" class="toolbar-btn underline">U</button>
+                         <button (click)="applyFormat('bold')" class="p-2 rounded-lg text-gray-500 hover:bg-gray-100 hover:text-gray-900 font-bold">B</button>
+                         <button (click)="applyFormat('italic')" class="p-2 rounded-lg text-gray-500 hover:bg-gray-100 hover:text-gray-900 italic">I</button>
+                         <button (click)="applyFormat('underline')" class="p-2 rounded-lg text-gray-500 hover:bg-gray-100 hover:text-gray-900 underline">U</button>
                          <div class="h-5 border-l border-gray-200 mx-1"></div>
-                         <button (click)="fileInput.click()" class="toolbar-btn"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path></svg></button>
+                         <button (click)="fileInput.click()" class="p-2 rounded-lg text-gray-500 hover:bg-gray-100 hover:text-gray-900"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path></svg></button>
                          <input type="file" #fileInput (change)="onFileSelected($event)" class="hidden" multiple>
                     </div>
                     <button (click)="sendMessage()" class="px-5 py-2 text-sm font-medium text-white bg-blue-500 border border-transparent rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 flex items-center shadow-sm">
