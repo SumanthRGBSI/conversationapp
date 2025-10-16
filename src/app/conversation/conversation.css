@@ -1,5 +1,3 @@
-@import "tailwindcss";
-
 :root {
     --brand-primary: #3B82F6; /* blue-500: A balanced, professional blue */
     --gray-50: #f9fafb;
@@ -36,10 +34,6 @@
 
 :host ::ng-deep #message-input:focus {
     outline: none;
-}
-
-.toolbar-btn {
-    @apply p-2 rounded-lg text-gray-500 hover:bg-gray-100 hover:text-gray-900;
 }
 
 /* Placeholder styling for contenteditable div */
