@@ -1,0 +1,112 @@
+<!-- Conversation Component Container -->
+<div class="w-full max-w-4xl h-[95vh] bg-white rounded-2xl shadow-xl flex flex-col overflow-hidden">
+
+    <header class="p-4 border-b border-gray-100">
+        <h1 class="text-lg font-semibold text-gray-800">Project Apollo Thread</h1>
+    </header>
+
+    <main #chatBody class="flex-1 p-6 overflow-y-auto bg-gray-50 space-y-2">
+        <!-- Messages will be dynamically injected here -->
+        <div *ngFor="let message of mockMessages"
+             [class]="'flex w-full items-start gap-3 ' + (message.user.name === 'You' ? 'justify-end' : 'justify-start')">
+            <div [attr.data-message-id]="message.id"
+                 (click)="selectMessage(message.id)"
+                 [class]="'message-container p-4 border cursor-pointer max-w-md lg:max-w-lg shadow-sm ' + getMessageClasses(message)">
+
+                <div class="flex justify-between items-start mb-2">
+                    <div>
+                        <p [class]="'font-semibold text-sm ' + (message.user.name === 'You' ? 'text-white' : 'text-gray-900')">{{ message.user.name }}</p>
+                        <p [class]="'text-xs ' + (message.user.name === 'You' ? 'text-blue-100' : 'text-gray-500')">{{ message.user.role }}</p>
+                    </div>
+                    <p [class]="'text-xs flex-shrink-0 ml-4 ' + (message.user.name === 'You' ? 'text-blue-200' : 'text-gray-400')">{{ message.documents }}</p>
+                </div>
+
+                <div *ngIf="message.replyTo" class="mb-3 p-2.5 border-l-2 rounded-r-md"
+                    [class.bg-blue-400/80]="message.user.name === 'You'"
+                    [class.border-blue-300]="message.user.name === 'You'"
+                    [class.bg-gray-100]="message.user.name !== 'You'"
+                    [class.border-gray-300]="message.user.name !== 'You'">
+                    <p class="text-xs font-semibold"
+                        [class.text-white]="message.user.name === 'You'"
+                        [class.text-gray-700]="message.user.name !== 'You'">{{ message.replyTo.senderName }}</p>
+                    <p class="text-xs truncate"
+                        [class.text-blue-100]="message.user.name === 'You'"
+                        [class.text-gray-600]="message.user.name !== 'You'">{{ message.replyTo.content }}</p>
+                </div>
+
+                <div class="space-y-1">
+                    <p *ngFor="let line of message.content" class="text-sm leading-6"
+                        [class.text-white/90]="message.user.name === 'You'"
+                        [class.text-gray-700]="message.user.name !== 'You'"
+                        [innerHTML]="line"></p>
+                </div>
+
+                <div *ngIf="message.attachments && message.attachments.length > 0" class="mt-3 pt-3 border-t space-y-2"
+                     [class.border-blue-400/50]="message.user.name === 'You'"
+                     [class.border-gray-200/80]="message.user.name !== 'You'">
+                    <div *ngFor="let file of message.attachments" class="flex items-center text-sm font-medium">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                            [class.text-blue-200]="message.user.name === 'You'"
+                            [class.text-gray-400]="message.user.name !== 'You'"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        <span class="cursor-pointer"
+                            [class.text-white]="message.user.name === 'You'"
+                            [class.hover:underline]="message.user.name === 'You'"
+                            [class.text-blue-600]="message.user.name !== 'You'"
+                            [class.hover:underline]="message.user.name !== 'You'">{{ file.name }}</span>
+                        <span class="text-xs ml-auto"
+                            [class.text-blue-200]="message.user.name === 'You'"
+                            [class.text-gray-500]="message.user.name !== 'You'">{{ file.size }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer with Rich Text Input -->
+    <footer class="p-4 border-t border-gray-100 bg-white">
+        <!-- Reply Preview Container -->
+        <div #replyPreviewContainer [hidden]="!selectedMessageId" class="mb-2 p-3 border-l-4 border-blue-400 bg-blue-50 rounded-r-lg">
+            <div class="flex justify-between items-center">
+                <div>
+                    <p class="text-sm font-semibold text-blue-800">{{ getReplyToName() }}</p>
+                    <p class="text-sm text-gray-600 truncate max-w-md">{{ getReplyToContent() }}</p>
+                </div>
+                <button (click)="deselectMessage()" class="p-1 rounded-full hover:bg-gray-200 text-gray-500 hover:text-gray-700">
+                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Rich Text Editor Container -->
+        <div class="bg-white border border-gray-200 rounded-lg focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500">
+            <!-- Text Input Area -->
+            <div #messageInput contenteditable="true" [attr.data-placeholder]="messagePlaceholder" (keydown.enter)="onEnter($event)" class="w-full p-4 text-sm text-gray-800 min-h-[70px]"></div>
+            <!-- Toolbar and Attachments Preview -->
+            <div class="p-2 border-t border-gray-100">
+                <div #attachmentsPreview class="px-2 space-y-2 mb-2">
+                    <div *ngFor="let file of attachedFiles; let i = index" class="flex items-center justify-between bg-gray-100 p-2 rounded-md text-sm">
+                        <div class="flex items-center overflow-hidden">
+                             <svg class="w-5 h-5 mr-2 text-gray-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                            <span class="truncate text-gray-800 font-medium">{{ file.name }}</span>
+                        </div>
+                        <button (click)="removeAttachment(i)" class="ml-2 text-gray-500 hover:text-red-500 p-1 rounded-full hover:bg-red-100 flex-shrink-0 text-lg leading-none">&times;</button>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center space-x-1">
+                         <button (click)="applyFormat('bold')" class="toolbar-btn font-bold">B</button>
+                         <button (click)="applyFormat('italic')" class="toolbar-btn italic">I</button>
+                         <button (click)="applyFormat('underline')" class="toolbar-btn underline">U</button>
+                         <div class="h-5 border-l border-gray-200 mx-1"></div>
+                         <button (click)="fileInput.click()" class="toolbar-btn"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path></svg></button>
+                         <input type="file" #fileInput (change)="onFileSelected($event)" class="hidden" multiple>
+                    </div>
+                    <button (click)="sendMessage()" class="px-5 py-2 text-sm font-medium text-white bg-blue-500 border border-transparent rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 flex items-center shadow-sm">
+                        Send
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
